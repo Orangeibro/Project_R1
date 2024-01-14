@@ -1,0 +1,25 @@
+---
+title: "CW2_Global Power Plant_test report"
+author: "Ibrahim Usman"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r }
+# Calculate total capacity by primary fuel type
+TotalCapacity_by_fuel <- PowerData1 %>%
+  group_by(pryfuel) %>%
+  summarize(TotalCapacity = sum(capacity, na.rm = TRUE))
+
+# Display the results in a table
+knitr::kable(TotalCapacity_by_fuel, align = c("l", "r"), col.names = c("Primary Fuel", "Total Capacity (MW)"))
+
+```
+
+

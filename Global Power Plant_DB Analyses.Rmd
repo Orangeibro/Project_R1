@@ -1,0 +1,177 @@
+---
+title: "Global Power Plant_DB Analyses And Predicting Future Energy Generation"
+author: "Ibrahim Usman"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+##############Rename the Column names#####################################
+
+############Identify the dominant fuel types used for power generation based on total capacity and generation#########
+############Examine time-based trends in capacity and generation by fuel type, which can provide insights into changes in the energy mix over time#################
+############Analyze generation data for specific power plants to understand their performance and contribution to total generation##########################
+############Compare capacity and generation trends across different countries or regions to identify variations in energy production patterns#############
+############Identifying any gaps or inconsistencies in the data that may require further investigation or data cleaning###
+#####Visualizing Capacity and Generation by Fuel Type using line or Area plots to identify the relative contribution of different fuel types to the overall capacity and generation in different countries or regions#####
+#####Using line or area plots to compare the trends in capacity and generation over time for different countries or regions. This can provide insights into the changes in energy production patterns and the growth of capacity and generation in different areas#######
+######Using heat orchoropleth maps to visualize the spatial distr of capacity, generation, or other relevant metrics across different countries or regions. This can provide a geographical perspective on the energy production patterns and variations across different areas####
+############## Country with the highest no of Power Plants ###############
+############## Significant Variance in generation_gwh between 2013 and 2019 #####
+############## Estimated_generation_gwh between 2013 and 2017 #####
+############## The most desirable Power Plants ###############
+############## Country with the most robust Power Plants ###############
+
+############## Analysing the Dataset  ###############
+
+#####Time Series Analysis: 
+####to uncover patterns and trends over time.Use techniques such as time series ####decomposition,autocorrelation, and forecasting to analyze the historical generation of
+######data and make future predictions.
+
+######Time Series plot of Generation Data for a specific power plant
+PowerPlantData<-filter(data, gppd_idnr=='GEODB0040534')
+ggplot(PowerPlantData, aes(x=year_of_capacity_data,y=generation_gwh_2013)+
+geom_line()+
+xlab('Year')+
+ylab('Generation (GWh)')+
+ggtitle('Generation Data for Power Plant: GEODB0040534')
+ylim(c(0, max(PowerPlantData$generation_gwh_2013, na.rm=TRUE)))
+
+Include the Time Component for Trend Analysis
+library(dplyr)
+library(lubridate)
+library(ggplot2)
+####convert year_of_capacity_data to Date format
+Data$year_of_capacity_data <- as.Date(Data$year_of_capacity_data, format = '')
+#######Overview the Dataset
+str(Data)
+Summary(Data)
+
+#######Filter the data for specific country
+filteredData <-filter(data, country=='USA')
+
+###see
+Greedo <- filter (starwars,name=='Greedo') %>%
+  select('mass','skin_color','hair_color','eye_color')
+  
+#####Total Capacity and Generation by fuel type 
+total_capacity_by_fuel<-data %>% 
+group_by(primary_fuel) %>%
+summarize(total_capacity_mw= sum(capacity_mw,na.rm='TRUE'))
+
+total_generation_by_fuel<-data %>% 
+group_by(primary_fuel) %>%
+summarize(total_generation_gwh =sum(generation_gwh_2013,na.rm='TRUE'))
+
+######Barplot of the Total Capacity by Fuel Type
+barplot(total_capacity_by_fuel$total_capacity_mw,
+names.arg=total_capacity_by_fuel$primary_fuel,
+xlab='Primary Fuel',
+ylab='Total Capacity (MW),
+main='Total Capacity by Fuel Type')
+
+######Barplot of the Total Generation by Fuel Type
+barplot(total_generation_by_fuel$total_generation_gwh,
+names.arg=total_generation_by_fuel$primary_fuel,
+xlab='Primary Fuel',
+ylab='Total generation (GWh),
+main='Total generation by Fuel Type')
+
+###see
+data<- read.csv(file.choose(),header=T)
+continent<-factor(data$continent, 
+                  labels=c('Asia','Eur','Africa','Ocean','NAmer','SAmer'))
+x<-table(continent);x
+barplot(x,main='BAR CHART BY CONTINENTS',col='magenta')
+
+#######Filter the data for specific country and fuel type
+filteredData <-filter(data, country=='USA', primary_fuel=='coal')
+
+===================USING LINE PLOT===========
+#######Overview the Dataset
+str(Data)
+Summary(Data)
+
+#######Filter the data for specific country
+filteredData <-filter(data, country=='USA')
+  
+#####Total Capacity and Generation by fuel type 
+
+total_capacity_by_fuel<-data %>% 
+group_by(primary_fuel) %>%
+summarize(total_capacity_mw= sum(capacity_mw,na.rm='TRUE'))
+
+total_generation_by_fuel<-data %>% 
+group_by(primary_fuel) %>%
+summarize(total_generation_gwh =sum(generation_gwh_2013,na.rm='TRUE'))
+
+######Line plot of the Total Capacity by Fuel Type
+ggplot(total_capacity_by_fuel, aes(x=primary_fuel,y=total_capacity_mw)+
+geom_line()+
+xlab('Primary Fuel')+
+ylab('Total Capacity (MW)+
+ggtitle('Total capacity by fuel type')+
+theme_minimal()+
+theme(axix_text.x=element_text(angle=45, hjust=1))
+
+
+######Line Plot of the Total Generation by Fuel Type
+ggplot(total_generation_by_fuel, aes(x=primary_fuel,y=total_generation_gWh_2023)+
+geom_line()+
+xlab('Primary Fuel')+
+ylab('Total Generation (GWh)+
+ggtitle('Total generation by fuel type')+
+theme_minimal()+
+theme(axis_text.x=element_text(angle=45, hjust=1))
+
+==============================
+
+#####Correlation Analysis: 
+#####Calculate corr_coeffs to understand the strength and direction of the relationships #####between variables such as capacity_mw, commissioning_year, and generation data. This can #####help you identify which variables are strongly correlated and may have a significant
+##### impact on power generation.
+
+star_data <- datasaurus_dozen %>% filter(dataset == 'star') 
+star_data %>% summarize (r = cor( x, y))
+
+#####Geospatial Analysis: 
+#####Utilize the latitude and longitude information in the dataset to perform geospatial #####analysis. identifying clusters of power plants or analyzing spatial patterns/ trends.
+
+
+###########Generation_gwh_TOTAL
+############## Cal Desc Statistics for Capacity_mw # Summary(df$Capacity_mw)
+#####Conduct a t-test to compare Capacity_mw betw two groups t.test(df$Capacity_mw)
+#######Using EDA, Explore the distribution of variables, identify trends, patterns, and ##############################outliers, and analyze the relationships between variables
+
+#####Calculate descriptive statistics such as mean, median, mode, standard deviation, and 
+##############range for numerical variables such as capacity_mw, latitude, longitude, ############commissioning_year, year_of_capacity_data, generation_gwh_2013-2019, and #######estimated_generation_gwh_2013-2017. This will help you understand the central #####tendency, variability, and distribution of the data
+
+############## Feature Engineering  ###############
+######derive meaningful insights from existing features. e.g,calculate the age of each 
+###### power plant by subtracting the commissioning_year from the current year. 
+######You can also calculate the estimated generation percentage by dividing ######estimated_generation_gwh_2013-2017 by generation_gwh_2013-2019 to determine the ######accuracy of generation data.
+
+############## Data Visualization  ###############
+#####Use data visualization techniques to effectively communicate your findings. Create #####visualizations such as bar charts, pie charts, and maps to illustrate the distribution
+######of power plants by country, primary fuel type, and generation data.  
+######Use color coding or size coding to represent diff variables and make the ######Visualizations more informative and visually appealing.
+
+############## Comparative Analysis  ###############
+#####Conduct comparative analysis by comparing different variables across countries, primary #####fuel types, and commissioning years. Analyze the diffs in capacity_mw, generation data,
+#####estimated generation data for diff countries/ fueltypes to identifypatterns and trends.
+
+############## Data Interpretation     ###############
+#####Interpret the findings from your analysis and draw conclusions. Summarize the key 
+#####insights, trends,and patterns identified from the data analysis 
+
+############## Provide Recommendations ###############
+
+
+Lastly#########It's important to thoroughly document the data visualization process, including the choice of plots, colours, scales, and interpretations of the visualizations. This documentation can help in explaining the insights obtained from the visualizations and supporting the conclusions drawn from the analysis.#########################################
+
+
+
