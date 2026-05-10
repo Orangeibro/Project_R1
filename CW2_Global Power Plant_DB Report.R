@@ -432,7 +432,7 @@ Interpretation and Visualization of Results:
   #Once you have conducted your statistical analyses, you can interpret the results and draw conclusions based on your findings. You can use functions like print(), summary(), and plot() to interpret and visualize the results of your analyses, and create visualizations such as bar charts, scatter plots, histograms, and more to present your findings visually.
 
 Documentation: 
-Finally, it's important to document your analysis, including the steps you followed, the functions you used, and the results you obtained. You can create a report or document using RMarkdown, a markup language that combines R code with text and generates reports in various formats such as HTML, PDF, or Word.
+I have documented the analysis, including the steps followed, the functions used, and the results obtained. This report is created using RMarkdown, a markup language that combines R code with text and generates reports in various formats such as HTML, PDF, or Word.
 
 
 
